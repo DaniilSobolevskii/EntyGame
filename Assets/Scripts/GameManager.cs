@@ -4,39 +4,36 @@ using Unity.VisualScripting;
 using UnityEngine;
 
 
-public partial class GameManager : MonoBehaviour
+public class GameManager : MonoBehaviour
 {
+    [SerializeField]private GameManager _gameManager;
     [SerializeField] private GameObject _prefab;
     [SerializeField] private GameObject _spherePrefab;
     [SerializeField] private ColorManager _colorManager;
-
+    [SerializeField] private Counter _counter;
+    [SerializeField] private CylinderControler _cylinder;
+ 
+    private Color[] _colors;
 
     void Awake()
     {
-        for (int i = 0; i < 6; i++)
-        {
-            var cylinder = Instantiate(_prefab);
-            GetRandomPosition(cylinder);
-            cylinder.GetComponent<Renderer>().material.color = _colorManager.GetColor();
-        }
+        _cylinder.Initialized(_prefab,_gameManager,_colorManager);
 
         GameObject sphere = Instantiate(_spherePrefab);
         sphere.GetComponent<Sphere>().Inizialized(this, _colorManager);
         GetRandomPosition(sphere);
         sphere.GetComponent<Renderer>().material.color = _colorManager.GetColor();
         
+        
+        _counter.Iniziailize(_colorManager);
+
+
+
     }
 
     public void UpdatePositions()
     {
-        for (int i = 0; i < 6; i++)
-        {
-            
-            var cylinder = Instantiate(_prefab,transform);
-             GetRandomPosition(cylinder);
-            cylinder.GetComponent<Renderer>().material.color = _colorManager.GetColor();
-            
-        }
+        _cylinder.Initialized(_prefab,_gameManager, _colorManager);
     }
     
     public void GetRandomPosition(GameObject cylinder)
@@ -49,4 +46,5 @@ public partial class GameManager : MonoBehaviour
         cylinder.transform.position = cylinderPosition;
     }
 
+   
 }
